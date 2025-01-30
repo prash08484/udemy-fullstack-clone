@@ -1,55 +1,122 @@
-## Create a course selling website
+# PrashStudy - Online Course Selling App
 
-### Description
-You need to implement a course selling app. Make sure you setup your own mongodb instance before starting. 
-It needs to support two types of users - 
-1. Admins
-2. Users
+## 📌 Introduction
+PrashStudy is a full-stack online course-selling platform where admins can create and manage courses, and users can browse, purchase, and access learning materials. The app is built using the **MERN stack** (MongoDB, Express, React, Node.js) and includes **authentication, course management, and user enrollment features**.
 
-Admins are allowed to sign up, create courses.
-Users are allowed to sign up, view courses, purchase courses.
-This in the real world would translate to an app like udemy.
+## 🚀 Features
+- **Admin Panel**: Create, update, and delete courses
+- **User Authentication**: Secure login and signup system
+- **Course Purchase**: Users can buy courses and access them anytime
+- **Course Management**: Admins can manage course details
+- **Secure Payments** (Future Enhancement)
+- **Responsive UI** for seamless browsing experience
 
-This one doesn't use authentication the right way. We will learn how to do that in the next assignment. 
-For this one, in every authenticated requests, you need to send the username and password in the headers (and not the jwt).
-This is the reason why this assignment doesn't have a sign in route.
+## 🛠️ Tech Stack
+- **Frontend**: React, Tailwind CSS
+- **Backend**: Express.js, Node.js
+- **Database**: MongoDB with Mongoose ORM
+- **Authentication**: JWT for secure access
+- **Validation**: Zod for input validation
+- **ORM**: Prisma (if using PostgreSQL as an alternative database)
 
-You need to use mongodb to store all the data persistently.
+## ⚙️ Installation
 
-## Routes
-### Admin Routes:
-- POST /admin/signup
-  Description: Creates a new admin account.
-  Input Body: { username: 'admin', password: 'pass' }
-  Output: { message: 'Admin created successfully' }
+### 1️⃣ Clone the Repository
+```sh
+git clone https://github.com/yourusername/prashstudy.git
+cd prashstudy
+```
 
-- POST /admin/courses
-  Description: Creates a new course.
-  Input: Headers: { 'username': 'username', 'password': 'password' }, Body: { title: 'course title', description: 'course description', price: 100, imageLink: 'https://linktoimage.com' }
-  Output: { message: 'Course created successfully', courseId: "new course id" }
+### 2️⃣ Install Dependencies
+#### Backend
+```sh
+cd backend
+npm install
+```
 
-- GET /admin/courses
-  Description: Returns all the courses.
-  Input: Headers: { 'username': 'username', 'password': 'password' }
-  Output: { courses: [ { id: 1, title: 'course title', description: 'course description', price: 100, imageLink: 'https://linktoimage.com', published: true }, ... ] }
+#### Frontend
+```sh
+cd ../frontend
+npm install
+```
 
-### User routes
-- POST /users/signup
-  Description: Creates a new user account.
-  Input: { username: 'user', password: 'pass' }
-  Output: { message: 'User created successfully' }
+### 3️⃣ Setup Environment Variables
+Create a `.env` file in the backend directory with:
+```env
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_secret_key
+```
 
-- GET /users/courses
-  Description: Lists all the courses.
-  Input: Headers: { 'username': 'username', 'password': 'password' }
-  Output: { courses: [ { id: 1, title: 'course title', description: 'course description', price: 100, imageLink: 'https://linktoimage.com', published: true }, ... ] }
+### 4️⃣ Run the Development Server
+#### Start Backend Server
+```sh
+cd backend
+npm start
+```
 
-- POST /users/courses/:courseId
-  Description: Purchases a course. courseId in the URL path should be replaced with the ID of the course to be purchased.
-  Input: Headers: { 'username': 'username', 'password': 'password' }
-  Output: { message: 'Course purchased successfully' }
-  
-- GET /users/purchasedCourses
-  Description: Lists all the courses purchased by the user.
-  Input: Headers: { 'username': 'username', 'password': 'password' }
-  Output: { purchasedCourses: [ { id: 1, title: 'course title', description: 'course description', price: 100, imageLink: 'https://linktoimage.com', published: true }, ... ] }
+#### Start Frontend Server
+```sh
+cd frontend
+npm start
+```
+
+## 🔥 API Endpoints
+
+### 🛠️ **Admin Routes**
+| Method | Endpoint | Description |
+|--------|-------------|-------------|
+| POST   | `/admin/signup` | Admin signup |
+| POST   | `/admin/login` | Admin login |
+| POST   | `/admin/courses` | Create a course |
+| GET    | `/admin/courses` | View all courses |
+
+### 👨‍🎓 **User Routes**
+| Method | Endpoint | Description |
+|--------|-------------|-------------|
+| POST   | `/users/signup` | User signup |
+| POST   | `/users/login` | User login |
+| GET    | `/users/courses` | View available courses |
+| POST   | `/users/courses/:courseId` | Purchase a course |
+| GET    | `/users/purchasedCourses` | View purchased courses |
+
+## 🛠️ Database Schema
+
+### **User Schema**
+```js
+const UserSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    purchasedCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }]
+});
+```
+
+### **Course Schema**
+```js
+const CourseSchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    description: { type: String },
+    price: { type: Number, required: true },
+    imageLink: { type: String }
+});
+```
+
+## 🛡️ Authentication & Security
+- JWT-based authentication for users and admins
+- Passwords hashed with bcrypt
+- Input validation with **Zod** to prevent invalid requests
+
+## 📌 Future Enhancements
+- **Payment Integration** (Stripe/Razorpay)
+- **Course Progress Tracking**
+- **Video Hosting & Streaming**
+- **Interactive Quizzes & Assignments**
+
+## 🤝 Contributing
+Feel free to fork the repo, raise issues, or submit PRs!
+
+## 📜 License
+MIT License
+
+---
+💡 Built with ❤️ by **Prashant Yadav**
+
